@@ -1,0 +1,43 @@
+<?php
+
+    // configuration
+    require("../includes/config.php");
+
+    // if form was submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST")
+    {
+        if (empty($_POST["password"]) || empty($_POST["cpassword"]))
+		{
+			apologize("Please fill all the feilds");		
+		}
+	
+			else if($_POST["password"]!=$_POST["cpassword"])
+				{
+					apologize("Password Do not match, try again");
+				}
+         	
+	else{
+		
+			//$q=query("INSERT INTO users (username, hash, cash) VALUES(?, ?, 10000.00)", $_POST["username"], crypt($_POST["password"]));	
+	$q=query("UPDATE users SET hash=? WHERE id = ?",crypt($_POST["password"]),$_SESSION["id"]);
+			if($q===false)
+				{
+				    apologize("ERROR!");
+				}	
+
+			else
+				{
+					$rows = query("SELECT LAST_UPDATE_ID() AS id");
+					$id = $rows[0];	
+					$_SESSION["id"]=$id["id"];
+					redirect("index.php");			
+				}
+		}
+    }
+    else
+    {
+        // else render form
+        render("reset_form.php", ["title" => "Register"]);
+    }
+
+?>

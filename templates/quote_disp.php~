@@ -1,0 +1,6 @@
+<?
+print($name);
+print($price);
+?>
+      price:  <h1><?= htmlspecialchars($price) ?></h1> 
+	Name:<h1><?= htmlspecialchars($name) ?></h1>
